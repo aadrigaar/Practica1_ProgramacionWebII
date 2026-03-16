@@ -49,3 +49,7 @@ VITE_API_BASE=http://localhost:3000/api
 La interfaz muestra acciones segun rol:
 - Admin: crear, editar y borrar productos. Gestion de usuarios.
 - User: solo lectura de productos.
+
+## Extra (maxima nota)
+- Filtros por nombre, categoria y rango de precio.
+- Paginacion en frontend.

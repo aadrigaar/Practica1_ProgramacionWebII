@@ -6,6 +6,7 @@
     precio: product?.precio ?? '',
     imagen: null,
     activo: product?.activo ?? true,
+    categoria: product?.categoria || '',
     imagenUrl: typeof product?.imagen === 'string' && /^https?:\/\//i.test(product.imagen)
       ? product.imagen
       : ''
@@ -22,6 +23,7 @@
     const nombre = form.nombre.trim();
     const precio = Number(form.precio);
     const imagenUrl = form.imagenUrl.trim();
+    const categoria = form.categoria.trim();
 
     if (!nombre) {
       error = 'El nombre es obligatorio.';
@@ -42,7 +44,8 @@
       precio,
       imagen: form.imagen,
       imagenUrl,
-      activo: form.activo
+      activo: form.activo,
+      categoria
     });
   }
 </script>
@@ -71,6 +74,10 @@
         bind:value={form.imagenUrl}
         placeholder="https://..."
       />
+    </div>
+    <div class="field">
+      <label for="categoria">Categoria</label>
+      <input id="categoria" type="text" bind:value={form.categoria} placeholder="Ej. Perifericos" />
     </div>
     <div class="field">
       <label>Activo</label>

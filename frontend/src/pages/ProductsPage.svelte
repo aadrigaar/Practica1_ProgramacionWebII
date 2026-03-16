@@ -9,19 +9,42 @@
   const productCount = $derived(app.products.length);
   const visibleProducts = $derived.by(() => {
     const query = app.filter.query.trim().toLowerCase();
+    const category = app.filter.category.trim().toLowerCase();
     const min = Number(app.filter.min);
     const max = Number(app.filter.max);
     const activeOnly = app.filter.activeOnly;
 
     return app.products.filter((product) => {
       const name = (product.nombre || '').toLowerCase();
+      const cat = (product.categoria || '').toLowerCase();
       if (query && !name.includes(query)) return false;
+      if (category && !cat.includes(category)) return false;
       if (!Number.isNaN(min) && min > 0 && Number(product.precio) < min) return false;
       if (!Number.isNaN(max) && max > 0 && Number(product.precio) > max) return false;
       const active = product.activo ?? true;
       if (activeOnly && !active) return false;
       return true;
     });
+  });
+
+  const pageSize = $derived(Number(app.filter.pageSize) || 6);
+  const totalPages = $derived(Math.max(1, Math.ceil(visibleProducts.length / pageSize)));
+  const currentPage = $derived(Math.min(app.filter.page, totalPages));
+  const pagedProducts = $derived.by(() => {
+    const start = (currentPage - 1) * pageSize;
+    return visibleProducts.slice(start, start + pageSize);
+  });
+
+  const filterKey = $derived(
+    `${app.filter.query}|${app.filter.category}|${app.filter.min}|${app.filter.max}|${app.filter.activeOnly}`
+  );
+  let lastKey = $state(filterKey);
+
+  $effect(() => {
+    if (filterKey !== lastKey) {
+      lastKey = filterKey;
+      app.filter.page = 1;
+    }
   });
 
   let showForm = $state(false);
@@ -118,6 +141,10 @@
         <label>Buscar por nombre</label>
         <input type="text" bind:value={app.filter.query} placeholder="Buscar..." />
       </div>
+      <div class="field" style="flex: 1;">
+        <label>Categoria</label>
+        <input type="text" bind:value={app.filter.category} placeholder="Perifericos, audio..." />
+      </div>
       <div class="field">
         <label>Min EUR</label>
         <input type="number" min="0" step="0.01" bind:value={app.filter.min} />
@@ -130,11 +157,20 @@
         <label>Solo activos</label>
         <input type="checkbox" bind:checked={app.filter.activeOnly} />
       </div>
+      <div class="field">
+        <label>Por pagina</label>
+        <select bind:value={app.filter.pageSize}>
+          <option value="4">4</option>
+          <option value="6">6</option>
+          <option value="8">8</option>
+          <option value="12">12</option>
+        </select>
+      </div>
     </div>
   </div>
 
   <p class="muted" style="margin-top: 0.8rem;">
-    Mostrando {visibleProducts.length} de {productCount} productos
+    Mostrando {pagedProducts.length} de {visibleProducts.length} filtrados (total {productCount})
   </p>
 
   {#if app.productsLoading}
@@ -143,7 +179,7 @@
     <p class="error" style="margin-top: 1rem;">{app.productsError}</p>
   {:else}
     <div class="grid products" style="margin-top: 1rem;">
-      {#each visibleProducts as product (product._id)}
+      {#each pagedProducts as product (product._id)}
         <ProductCard
           {product}
           canEdit={isAdmin}
@@ -156,6 +192,26 @@
 
     {#if visibleProducts.length === 0}
       <p class="muted" style="margin-top: 1rem;">No hay productos para mostrar.</p>
+    {/if}
+
+    {#if visibleProducts.length > 0}
+      <div class="row space" style="margin-top: 1rem;">
+        <button
+          class="btn ghost"
+          on:click={() => (app.filter.page = Math.max(1, currentPage - 1))}
+          disabled={currentPage <= 1}
+        >
+          Anterior
+        </button>
+        <div class="tag">Pagina {currentPage} de {totalPages}</div>
+        <button
+          class="btn ghost"
+          on:click={() => (app.filter.page = Math.min(totalPages, currentPage + 1))}
+          disabled={currentPage >= totalPages}
+        >
+          Siguiente
+        </button>
+      </div>
     {/if}
   {/if}
 

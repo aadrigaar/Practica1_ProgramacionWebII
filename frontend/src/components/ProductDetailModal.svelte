@@ -24,6 +24,13 @@
       <div>{Number(product.precio).toFixed(2)} EUR</div>
     </div>
 
+    {#if product.categoria}
+      <div class="stack" style="margin-top: 1rem;">
+        <strong>Categoria</strong>
+        <div>{product.categoria}</div>
+      </div>
+    {/if}
+
     {#if imageUrl}
       <div class="stack" style="margin-top: 1rem;">
         <strong>Imagen</strong>

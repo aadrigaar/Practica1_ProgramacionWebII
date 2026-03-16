@@ -27,9 +27,12 @@
     usersError: '',
     filter: {
       query: '',
+      category: '',
       min: '',
       max: '',
-      activeOnly: false
+      activeOnly: false,
+      page: 1,
+      pageSize: 6
     },
     toasts: []
   });

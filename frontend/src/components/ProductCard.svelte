@@ -8,6 +8,9 @@
     <div>
       <h3>{product.nombre}</h3>
       <div class="tag">Precio: {Number(product.precio).toFixed(2)} EUR</div>
+      {#if product.categoria}
+        <div class="tag">Categoria: {product.categoria}</div>
+      {/if}
     </div>
     <span class={`pill ${active ? '' : 'inactive'}`}>
       {active ? 'Activo' : 'No activo'}
