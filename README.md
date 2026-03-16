@@ -1,16 +1,14 @@
 # Practica PW2 - Programacion Web II
 
-Frontend SPA en Svelte 5 con JWT y roles, conectado a un backend Node.js (incluido). Cumple todos los puntos del enunciado, incluidos los opcionales para nota maxima.
+Este proyecto es mi frontend SPA en Svelte 5 con JWT y roles, conectado a un backend Node.js (incluido). Esta pensado para cumplir todos los puntos del enunciado, incluidos los opcionales para nota maxima.
 
 ## Requisitos
 - Node.js 18+
 - MongoDB en local (servicio o `mongod`)
-- Opcional: Docker Desktop (para levantar todo con `docker compose`)
 
-## Backend (incluido)
-El backend esta en `backend/` (Node + Express + Mongo + Redis). Redis es **opcional**: si no defines `REDIS_URL` o pones `REDIS_ENABLED=false`, el cache se desactiva.
+## Backend (local)
+El backend esta en `backend/` (Node + Express + Mongo). Redis es opcional y esta desactivado por defecto.
 
-### Opcion A: Local (sin Docker)
 1. Crea `backend/.env` con:
 ```
 PORT=3000
@@ -32,12 +30,6 @@ node seed.js
 ```
 npm run dev
 ```
-
-### Opcion B: Docker Compose
-```
-docker compose up --build
-```
-Backend en `http://localhost:3000`.
 
 Usuarios de prueba:
 - `admin / admin123`
@@ -79,7 +71,7 @@ VITE_API_BASE=http://localhost:3000/api
 - `DELETE /api/users/:id`
 - `GET /uploads/:filename` (imagenes subidas)
 
-## Funcionalidades (checklist del enunciado)
+## Checklist del enunciado (resumen)
 
 ### Requisitos minimos
 - Vite + Svelte 5 con organizacion en `components`, `pages`, `services`.
@@ -98,7 +90,7 @@ VITE_API_BASE=http://localhost:3000/api
 ### Funcionalidades avanzadas (maxima nota)
 - Administracion de usuarios y roles (solo admin).
 - Persistencia de sesion (localStorage) y cierre de sesion correcto.
-- Filtros por nombre, **categoria** y **rango de precio**.
+- Filtros por nombre, categoria y rango de precio.
 - Paginacion en frontend.
 - Validaciones de formularios y botones deshabilitados al guardar.
 - Feedback de carga, toasts de error y confirmaciones de borrado.
