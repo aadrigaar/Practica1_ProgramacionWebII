@@ -5,10 +5,11 @@ export async function getProducts({ name, token } = {}) {
   return apiFetch(`/productos${query}`, { token });
 }
 
-export async function createProduct({ nombre, precio, imagen, imagenUrl }, token) {
+export async function createProduct({ nombre, precio, imagen, imagenUrl, activo }, token) {
   const form = new FormData();
   form.append('nombre', nombre);
   form.append('precio', String(precio));
+  form.append('activo', String(!!activo));
   if (imagen) form.append('imagen', imagen);
   if (!imagen && imagenUrl) form.append('imagenUrl', imagenUrl);
   return apiFetch('/productos', {
@@ -19,11 +20,11 @@ export async function createProduct({ nombre, precio, imagen, imagenUrl }, token
   });
 }
 
-export async function updateProduct(id, { nombre, precio, imagenUrl, imagen }, token) {
+export async function updateProduct(id, { nombre, precio, imagenUrl, imagen, activo }, token) {
   return apiFetch(`/productos/${id}`, {
     method: 'PUT',
     token,
-    body: { nombre, precio, imagenUrl, imagen }
+    body: { nombre, precio, imagenUrl, imagen, activo }
   });
 }
 

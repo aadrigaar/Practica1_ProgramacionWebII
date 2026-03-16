@@ -14,12 +14,13 @@ class ProductController {
     try {
       if (req.user.role !== "admin") return res.status(403).json({ error: "Solo admin" });
       
-      const { nombre, precio, imagenUrl, imagen: imagenBody } = req.body;
+      const { nombre, precio, imagenUrl, imagen: imagenBody, activo } = req.body;
       let imagen = req.file ? req.file.filename : null;
       if (!imagen && imagenUrl) imagen = imagenUrl;
       if (!imagen && imagenBody) imagen = imagenBody;
+      const activoBool = typeof activo === 'string' ? activo === 'true' : activo;
       
-      const product = await ProductService.createProduct({ nombre, precio, imagen });
+      const product = await ProductService.createProduct({ nombre, precio, imagen, activo: activoBool });
       res.status(201).json(product);
     } catch (err) {
       res.status(500).json({ error: 'Error al crear producto' });
@@ -30,6 +31,7 @@ class ProductController {
     try {
       if (req.user.role !== "admin") return res.status(403).json({ error: "Solo admin" });
       const data = { ...req.body };
+      if (typeof data.activo === 'string') data.activo = data.activo === 'true';
       if (data.imagenUrl && !data.imagen) data.imagen = data.imagenUrl;
       delete data.imagenUrl;
       const product = await ProductService.updateProduct(req.params.id, data);

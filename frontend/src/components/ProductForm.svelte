@@ -5,6 +5,7 @@
     nombre: product?.nombre || '',
     precio: product?.precio ?? '',
     imagen: null,
+    activo: product?.activo ?? true,
     imagenUrl: typeof product?.imagen === 'string' && /^https?:\/\//i.test(product.imagen)
       ? product.imagen
       : ''
@@ -40,7 +41,8 @@
       nombre,
       precio,
       imagen: form.imagen,
-      imagenUrl
+      imagenUrl,
+      activo: form.activo
     });
   }
 </script>
@@ -69,6 +71,10 @@
         bind:value={form.imagenUrl}
         placeholder="https://..."
       />
+    </div>
+    <div class="field">
+      <label>Activo</label>
+      <input type="checkbox" bind:checked={form.activo} />
     </div>
   </div>
 
