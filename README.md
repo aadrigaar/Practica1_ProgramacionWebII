@@ -9,11 +9,6 @@ Este proyecto es mi frontend SPA en Svelte 5 con JWT y roles, conectado a un bac
 ## Backend (local)
 El backend esta en `backend/` (Node + Express + Mongo). Redis es opcional y esta desactivado por defecto.
 
-**Solucion rapida (backend)**
-1. Arranca MongoDB (`mongod` o servicio) en `localhost:27017`.
-2. Crea `backend/.env` y configura `MONGO_URI`.
-3. Ejecuta: `cd backend`, `npm install`, `node seed.js`, `npm run dev`.
-
 1. Crea `backend/.env` con:
 ```
 PORT=3000
