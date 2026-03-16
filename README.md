@@ -17,7 +17,6 @@ MONGO_URI=mongodb://localhost:27017/productos
 JWT_SECRET=Clave
 REDIS_ENABLED=false
 ```
-> Si te aparece `The "uri" parameter to "openUri()" must be a string, got "undefined"`, revisa que `backend/.env` existe y que MongoDB esta arrancado.
 2. Instala dependencias:
 ```
 cd backend
